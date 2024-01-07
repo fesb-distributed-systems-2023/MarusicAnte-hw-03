@@ -5,7 +5,7 @@
  **********************************
  * Description:
  *  
- *  This file contains model which defines Weather Station class and it's properties.
+ *  This file contains model which defines weather station class and it's properties.
  *
  **********************************
  */

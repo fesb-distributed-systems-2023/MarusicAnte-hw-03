@@ -1,0 +1,1 @@
+DELETE FROM WeatherStations WHERE Temperature > 50;
