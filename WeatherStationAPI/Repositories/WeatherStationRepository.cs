@@ -6,7 +6,7 @@
 * Description:
 *
 *  It is a class that has a list of all weather stations and 
-*  implements CRUD operations from IStoreRepository interface
+*  implements CRUD operations from IWeatherStationeRepository interface
 *
 **********************************
 */

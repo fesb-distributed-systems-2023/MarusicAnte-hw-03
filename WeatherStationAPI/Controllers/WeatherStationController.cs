@@ -15,16 +15,22 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WeatherStationAPI.Models.Domain;
-using WeatherStationAPI.Repositories;
+using WeatherStationAPI.Repositories.Interfaces;
 
 namespace WeatherStationAPI.Controllers
 {
     [ApiController]
     public class WeatherStationController : ControllerBase
     {
-        private readonly WeatherStationRepository m_weatherStationRepository;
+        //private readonly WeatherStationRepository m_weatherStationRepository;
+        private readonly IWeatherStationRepository m_weatherStationRepository;
 
-        public WeatherStationController(WeatherStationRepository weatherStationRepository)
+        //public WeatherStationController(WeatherStationRepository weatherStationRepository)
+        //{
+        //    m_weatherStationRepository = weatherStationRepository;
+        //}
+
+        public WeatherStationController(IWeatherStationRepository weatherStationRepository)
         {
             m_weatherStationRepository = weatherStationRepository;
         }

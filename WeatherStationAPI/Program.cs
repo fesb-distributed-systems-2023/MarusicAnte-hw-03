@@ -1,4 +1,5 @@
 using WeatherStationAPI.Repositories;
+using WeatherStationAPI.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<WeatherStationRepository>();
+//builder.Services.AddSingleton<WeatherStationRepository>();
+builder.Services.AddSingleton<IWeatherStationRepository, WeatherStationRepository_SQL>();
 
 var app = builder.Build();
 
