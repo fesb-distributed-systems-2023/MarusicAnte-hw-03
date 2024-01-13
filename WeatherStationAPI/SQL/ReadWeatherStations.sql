@@ -1,0 +1,1 @@
+SELECT ID, Name, Location, Temperature, Humidity, WindSpeed FROM WeatherStations WHERE WindSpeed != 0;
