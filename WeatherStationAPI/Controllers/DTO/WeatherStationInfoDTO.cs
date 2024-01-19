@@ -7,7 +7,6 @@ namespace WeatherStationAPI.Controllers.DTO
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Location { get; set; }
-        public string? Image { get; set; }
         public int Temperature { get; set; }
         public string? WeatherState { get; set; }
         public int Humidity { get; set; }
@@ -20,7 +19,6 @@ namespace WeatherStationAPI.Controllers.DTO
                 Id = weatherStation.Id,
                 Name = weatherStation.Name,
                 Location = weatherStation.Location,
-                Image = weatherStation.Image,
                 Temperature = weatherStation.Temperature,
                 WeatherState = weatherStation.WeatherState,
                 Humidity = weatherStation.Humidity,

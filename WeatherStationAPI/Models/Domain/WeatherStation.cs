@@ -24,9 +24,6 @@ namespace WeatherStationAPI.Models.Domain
         //  Weather Station location
         public string Location{ get; set; }
 
-        // Wather state image
-        public string Image { get; set; }
-
         // Value of temperature
         public int Temperature { get; set; }
 

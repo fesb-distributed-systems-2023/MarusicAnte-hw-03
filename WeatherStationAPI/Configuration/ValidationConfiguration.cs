@@ -7,7 +7,6 @@
         public int WeatherStateMaxCharacters { get; set; }
         public string LocationRegex { get; set; }
         public string IsTextOnlyRegex { get; set; }
-        public string IsValidUrlRegex { get; set; }
         public string IsIntegerNumberRegex { get; set; }
 
     }

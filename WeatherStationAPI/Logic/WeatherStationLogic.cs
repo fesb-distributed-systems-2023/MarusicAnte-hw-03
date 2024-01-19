@@ -53,19 +53,6 @@ namespace WeatherStationAPI.Logic
             }
         }
 
-        private void ValidateImageUrlField(string? imageUrl)
-        {
-            if (string.IsNullOrEmpty(imageUrl))
-            {
-                throw new UserErrorMessage("ImageUrl field cannot be empty.");
-            }
-
-
-            if (!Regex.IsMatch(imageUrl, _validation.IsValidUrlRegex))
-            {
-                throw new UserErrorMessage("Invalid ImageUrl format.");
-            }
-        }
 
         private void ValidateTemperatureField(int temperature)
         {
@@ -151,7 +138,6 @@ namespace WeatherStationAPI.Logic
             weatherStation.Id = -1;
             ValidateNameField(weatherStation.Name);
             ValidateLocationField(weatherStation.Location);
-            ValidateImageUrlField(weatherStation.Image);
             ValidateTemperatureField(weatherStation.Temperature);
             ValidateWeatherStateField(weatherStation.WeatherState);
             ValidateHumidityField(weatherStation.Humidity);
@@ -169,7 +155,6 @@ namespace WeatherStationAPI.Logic
             weatherStation.Id = -1;
             ValidateNameField(weatherStation.Name);
             ValidateLocationField(weatherStation.Location);
-            ValidateImageUrlField(weatherStation.Image);
             ValidateTemperatureField(weatherStation.Temperature);
             ValidateWeatherStateField(weatherStation.WeatherState);
             ValidateHumidityField(weatherStation.Humidity);

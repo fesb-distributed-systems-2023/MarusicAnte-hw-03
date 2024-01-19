@@ -103,9 +103,9 @@ namespace WeatherStationAPI.Controllers
             {
                 return NotFound($"Email with ID {id} not found.");
             }
-
+            
             _weatherStationLogic.DeleteWeatherStation(id);
-
+            
             return Ok();
         }
     }

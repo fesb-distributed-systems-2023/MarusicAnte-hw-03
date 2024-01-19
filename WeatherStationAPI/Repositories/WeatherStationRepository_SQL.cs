@@ -20,12 +20,11 @@ namespace WeatherStationAPI.Repositories
             var command = connection.CreateCommand();
             command.CommandText =
             @"
-                INSERT INTO WeatherStations (Name, Location, Image, Temperature, WeatherState, Humidity, WindSpeed)
-                VALUES ($name, $location, $image, $temperature, $weatherState, $humidity, $windSpeed)";
+                INSERT INTO WeatherStations (Name, Location, Temperature, WeatherState, Humidity, WindSpeed)
+                VALUES ($name, $location, $temperature, $weatherState, $humidity, $windSpeed)";
 
             command.Parameters.AddWithValue("$name", weatherStation.Name);
             command.Parameters.AddWithValue("$location", weatherStation.Location);
-            command.Parameters.AddWithValue("$image", weatherStation.Image);
             command.Parameters.AddWithValue("$temperature", weatherStation.Temperature);
             command.Parameters.AddWithValue("$weatherState", weatherStation.WeatherState);
             command.Parameters.AddWithValue("$humidity", weatherStation.Humidity);
@@ -72,7 +71,7 @@ namespace WeatherStationAPI.Repositories
             var command = connection.CreateCommand();
             command.CommandText =
             @"
-     SELECT ID, Name, Location, Image, Temperature, WeatherState, Humidity, WindSpeed FROM WeatherStations";
+     SELECT ID, Name, Location, Temperature, WeatherState, Humidity, WindSpeed FROM WeatherStations";
 
             using var reader = command.ExecuteReader();
 
@@ -85,11 +84,10 @@ namespace WeatherStationAPI.Repositories
                     Id = reader.GetInt32(0),
                     Name = reader.GetString(1),
                     Location = reader.GetString(2),
-                    Image = reader.GetString(3),
-                    Temperature = reader.GetInt32(4),
-                    WeatherState = reader.GetString(5),
-                    Humidity = reader.GetInt32(6), 
-                    WindSpeed = reader.GetInt32(7) 
+                    Temperature = reader.GetInt32(3),
+                    WeatherState = reader.GetString(4),
+                    Humidity = reader.GetInt32(5), 
+                    WindSpeed = reader.GetInt32(6) 
                 };
 
                 results.Add(row);
@@ -105,7 +103,7 @@ namespace WeatherStationAPI.Repositories
 
             var command = connection.CreateCommand();
             command.CommandText =
-                @"SELECT ID, Name, Location, Image, Temperature, WeatherState, Humidity, WindSpeed 
+                @"SELECT ID, Name, Location, Temperature, WeatherState, Humidity, WindSpeed 
                   FROM WeatherStations
                   WHERE ID == $id";
 
@@ -122,11 +120,10 @@ namespace WeatherStationAPI.Repositories
                     Id = reader.GetInt32(0),
                     Name = reader.GetString(1),
                     Location = reader.GetString(2),
-                    Image = reader.GetString(3),
-                    Temperature = reader.GetInt32(4),
-                    WeatherState = reader.GetString(5),
-                    Humidity = reader.GetInt32(6),
-                    WindSpeed = reader.GetInt32(7)
+                    Temperature = reader.GetInt32(3),
+                    WeatherState = reader.GetString(4),
+                    Humidity = reader.GetInt32(5),
+                    WindSpeed = reader.GetInt32(6)
                 };
             }
             return result;
@@ -143,7 +140,6 @@ namespace WeatherStationAPI.Repositories
                   SET
                       Name = $name,
                       Location = $location,
-                      Image = $image,
                       Temperature = $temperature,
                       WeatherState = $weatherState,
                       Humidity = $humidity,
@@ -154,7 +150,6 @@ namespace WeatherStationAPI.Repositories
             command.Parameters.AddWithValue("$id", id);
             command.Parameters.AddWithValue("$name", weatherStation.Name);
             command.Parameters.AddWithValue("$location", weatherStation.Location);
-            command.Parameters.AddWithValue("$image", weatherStation.Image);
             command.Parameters.AddWithValue("$temperature", weatherStation.Temperature);
             command.Parameters.AddWithValue("$weatherState", weatherStation.WeatherState);
             command.Parameters.AddWithValue("$humidity", weatherStation.Humidity);
