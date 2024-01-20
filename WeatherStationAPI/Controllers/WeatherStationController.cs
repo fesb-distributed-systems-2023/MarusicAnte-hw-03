@@ -14,69 +14,59 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WeatherStationAPI.Models.Domain;
-using WeatherStationAPI.Repositories.Interfaces;
+using WeatherStationAPI.Filters;
+using WeatherStationAPI.Logic;
+using WeatherStationAPI.Controllers.DTO;
+
 
 namespace WeatherStationAPI.Controllers
 {
+    [LogFilter]
     [ApiController]
     public class WeatherStationController : ControllerBase
     {
-        //private readonly WeatherStationRepository m_weatherStationRepository;
-        private readonly IWeatherStationRepository m_weatherStationRepository;
-
-        //public WeatherStationController(WeatherStationRepository weatherStationRepository)
-        //{
-        //    m_weatherStationRepository = weatherStationRepository;
-        //}
-
-        public WeatherStationController(IWeatherStationRepository weatherStationRepository)
+        
+        private readonly IWeatherStationLogic _weatherStationLogic;
+        public WeatherStationController(IWeatherStationLogic weatherStationLogic)
         {
-            m_weatherStationRepository = weatherStationRepository;
+            _weatherStationLogic = weatherStationLogic;
         }
 
         /*
          * Create Operation: Create a weather station object
          */
         [HttpPost("/weatherstations/new")]
-        public IActionResult PostNewWeatherStation([FromBody] WeatherStation weatherStation)
+        public IActionResult PostNewWeatherStation([FromBody] NewWeatherStationDTO weatherStation)
         {
-            bool isSuccess = m_weatherStationRepository.CreateNewWeatherStation(weatherStation);
+            _weatherStationLogic.CreateNewWeatherStation(weatherStation.ToModel());
 
-            if (isSuccess)
-            {
-                return Ok("Weather station is succesfully created ! \n");
-            }
-            else
-            {
-                return BadRequest("Error while creating a weather station ! \n");
-            }
+            return Ok("Weather station succesfully created.");
         }
 
         /*
-         * Read Operation 1 - Get all stores
+         * Read Operation 1 - Get all weather stations
          */
         [HttpGet("/weatherstations/all")]
-        public IActionResult GetAllWeatherStations()
+        public ActionResult<IEnumerable<WeatherStationInfoDTO>> GetAllWeatherStations()
         {
-            return Ok(m_weatherStationRepository.GetAllWeatherStations());
+            return Ok(_weatherStationLogic.GetAllWeatherStations().Select(x => WeatherStationInfoDTO.FromModel(x)));
         }
 
         /*
          * Read Operation 2 - Get the weather station with the specified ID
         */
         [HttpGet("/weatherstations/{id}")]
-        public IActionResult GetWeatherStationById([FromRoute] int id)
+        public ActionResult<WeatherStationInfoDTO> GetWeatherStationById([FromRoute] int id)
         {
-            var weatherStation = m_weatherStationRepository.GetWeatherStation(id);
+            var weatherStation = _weatherStationLogic.GetWeatherStation(id);
 
-            if (weatherStation is null)
+            if (weatherStation == null)
             {
-                return NotFound($"Could not find a weather station with ID = {id} \n");
+                return NotFound($"Could not find a weather station with ID = {id}");
             }
             else
             {
-                return Ok(weatherStation);
+                return Ok(WeatherStationInfoDTO.FromModel(weatherStation));
             }
         }
 
@@ -84,16 +74,22 @@ namespace WeatherStationAPI.Controllers
          * Update Operation - Update the weather station with the specified ID
          */
         [HttpPost("/weatherstations/{id}")]
-        public IActionResult UpdateWeatherStationById([FromRoute] int id, [FromBody] WeatherStation weatherStation)
+        public IActionResult UpdateWeatherStationById([FromRoute] int id, [FromBody] NewWeatherStationDTO weatherStation)
         {
-            if (m_weatherStationRepository.UpdateWeatherStation(id, weatherStation))
+            if (weatherStation is null)
             {
-                return Ok($"Successfully updated the weather station with ID = {id} \n");
+                return BadRequest("Wrong weather station format.");
             }
-            else
+
+            var existingWeatherStation = _weatherStationLogic.GetWeatherStation(id);
+            if(existingWeatherStation is null) 
             {
-                return NotFound($"Could not find the weather station with ID = {id} \n");
+                return NotFound($"Could not find the store with ID = {id}");
             }
+
+            _weatherStationLogic.UpdateWeatherStation(id, weatherStation.ToModel());
+
+            return Ok();
         }
 
         /*
@@ -102,14 +98,15 @@ namespace WeatherStationAPI.Controllers
         [HttpDelete("/weatherstations/{id}")]
         public IActionResult DeleteWeatherStationById([FromRoute] int id)
         {
-            if (m_weatherStationRepository.DeleteWeatherStation(id))
+            var existingWeatherStation = _weatherStationLogic.GetWeatherStation(id);
+            if(existingWeatherStation is null)
             {
-                return Ok($"Successfully deleted the weather station with ID = {id} \n");
+                return NotFound($"Email with ID {id} not found.");
             }
-            else
-            {
-                return NotFound($"Could not find a weather station with ID = {id} \n");
-            }
+            
+            _weatherStationLogic.DeleteWeatherStation(id);
+            
+            return Ok();
         }
     }
 }

@@ -25,12 +25,15 @@ namespace WeatherStationAPI.Models.Domain
         public string Location{ get; set; }
 
         // Value of temperature
-        public double Temperature { get; set; }
+        public int Temperature { get; set; }
+
+        // Weather state
+        public string WeatherState { get; set; }
 
         // Value of humidity
-        public double Humidity { get; set; }
+        public int Humidity { get; set; }
 
         // Value of wind speed
-        public double WindSpeed { get; set; }
+        public int WindSpeed { get; set; }
     }
 }
